@@ -38,9 +38,7 @@ INSTALLED_APPS = [
     'search',
     'account_service',
     'crispy_forms',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
+    # 'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -136,3 +134,4 @@ STATICFILES_DIRS = [
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 APP_NAME = 'Soundi'
 LOGOUT_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'account_service.CustomUser'
