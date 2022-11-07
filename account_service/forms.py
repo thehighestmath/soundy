@@ -50,6 +50,7 @@ class LoginForm(AuthenticationForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.fields['username'].label = "Логин"
+        self.fields['password'].label = "Пароль"
         submit = Submit('button', 'Войти')
         submit.field_classes = 'btn btn-outline-primary btn-lg btn-block'
         self.helper.add_input(submit)
@@ -75,3 +76,26 @@ class CustomUserChangeForm(UserChangeForm):
             'last_name',
             'tiktok_link',
         )
+
+
+class CustomUserViewForm(UserChangeForm):
+    class Meta:
+        model = CustomUser
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+            'tiktok_link',
+        )
+        labels = {
+            'username': 'Логин',
+            'first_name': 'Имя',
+            'last_name': 'Фамилия',
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.disabled = True
+        self.fields['username'].help_text = None
+        self.fields.pop('password')
