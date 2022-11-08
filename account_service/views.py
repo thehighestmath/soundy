@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.views import View
 from django.views.generic import CreateView
 
-from .forms import RegisterForm, LoginForm, CustomUserChangeForm, CustomUserViewForm
+from .forms import RegisterForm, LoginForm, CustomUserViewForm
 
 
 class RegisterView(CreateView):
@@ -24,9 +24,7 @@ class MyLoginView(LoginView):
 
 class ProfileView(View):
     def get(self, request, **kwargs):
-        print(request.user)
         form = CustomUserViewForm(instance=request.user)
         return render(request, 'account_service/profile.html', {
             'form': form
         })
-

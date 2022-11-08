@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load crispy_forms_filters %}
+{% load static %}
+{% block main %}
+  <main class="container mt-3">
+    <table class="table">
+      <tr>
+        <th scope="col">User id</th>
+        <th scope="col">User name</th>
+        <th scope="col">Price</th>
+      </tr>
+      {% for offer in offers %}
+        <tr>
+          <td class="c1">{{ offer.user.id }}</td>
+          <td class="c1">{{ offer.user.get_full_name }}</td>
+          <td class="c1">{{ offer.price }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+    <a href="{% url 'offer_create' %}" class="btn btn-lg btn-outline-primary btn-block">Создать предложение</a>
+  </main>
+{% endblock %}

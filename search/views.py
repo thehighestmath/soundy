@@ -2,19 +2,23 @@ from django.http import Http404, HttpResponse
 from django.shortcuts import render
 from django.views import View
 
+from offers.models import Offer
 from search.forms import SearchForm
 
 
 class HomeView(View):
     def get(self, request, **kwargs):
         form = SearchForm()
-        return render(request, 'hh/home.html', {
+        return render(request, 'search/home.html', {
             'form': form
         })
 
     def post(self, request, **kwargs):
         form = SearchForm(request.POST)
         if form.is_valid():
-            print(form.data)
-            return render(request, 'hh/search.html')
+            form = form.save(commit=False)
+            offers = Offer.objects.all()
+            return render(request, 'search/search.html', {
+                'offers': offers,
+            })
         raise Http404

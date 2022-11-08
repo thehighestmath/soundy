@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+{% load static %}
 {% block main %}
-  <main class="container">
+  <main class="container mt-3">
     <div class="row">
       <div class="col-8 col-lg-4 offset-2 offset-lg-4">
         <form class="form-signin pt-5" enctype="multipart/form-data" method="post">
           <div class="text-center mt-5 b-1">
-            <h1 class="h3 mb-3 font-weight-normal">Аккаунт</h1>
+            <h1 class="h3 mb-3 font-weight-normal">Предложение</h1>
           </div>
           {% csrf_token %}
           {% crispy form 'bootstrap4' %}
         </form>
-        <a href="{% url 'offers' %}" class="btn btn-lg btn-outline-primary btn-block">Мои предложения</a>
       </div>
     </div>
   </main>
