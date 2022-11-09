@@ -7,6 +7,12 @@
         <form class="form-signin pt-5" enctype="multipart/form-data" method="post">
           <div class="text-center mt-5 b-1">
             <h1 class="h3 mb-3 font-weight-normal">Аккаунт</h1>
+            {% if user.is_blogger %}
+              Blogger
+            {% endif %}
+            {% if user.is_musician %}
+              Musician
+            {% endif %}
           </div>
           {% csrf_token %}
           {% crispy form 'bootstrap4' %}

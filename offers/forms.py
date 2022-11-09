@@ -8,7 +8,7 @@ from .models import Offer
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
-        fields = ('price',)
+        fields = ('price', 'description')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

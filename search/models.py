@@ -11,17 +11,17 @@ class Search(models.Model):
         ART = 'art', _('Рисование')
 
     class SubscriberCount(models.TextChoices):
-        FROM_0_TO_1000 = '0-1000',  _('От 0 до 1000')
+        FROM_0_TO_1000 = '0-1000', _('От 0 до 1000')
         FROM_1000_TO_2000 = '1000-2000', _('От 1000 до 2000')
 
     class Result(models.TextChoices):
-        ANY = 'any',  _('Любой')
+        ANY = 'any', _('Любой')
 
     class LastActivity(models.TextChoices):
-        RECENTLY = 'recently',  _('Недавно')
+        RECENTLY = 'recently', _('Недавно')
 
     class Rating(models.TextChoices):
-        FROM_0_TO_1000 = '0-1000',  _('От 0 до 1000')
+        FROM_0_TO_1000 = '0-1000', _('От 0 до 1000')
         FROM_1000_TO_2000 = '1000-2000', _('От 1000 до 2000')
 
     category = models.CharField(
@@ -57,12 +57,3 @@ class Search(models.Model):
 
     def __str__(self):
         return f'Search: {self.__dir__()}'
-
-
-class Blogger(models.Model):
-    price = models.PositiveIntegerField(verbose_name='Цена')
-    subscriber_count = models.PositiveIntegerField(verbose_name='Количество подписчиков')
-    completed_order_count = models.PositiveIntegerField(verbose_name='Количество выполненных заказов')
-
-    def __str__(self):
-        return f'Blogger {self.price=} {self.subscriber_count=}'
