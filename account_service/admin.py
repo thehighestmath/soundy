@@ -6,16 +6,10 @@ from .models import Blogger, Musician, CustomUser
 
 
 class BloggerAdmin(ModelAdmin):
-    # add_form = CustomUserCreationForm
-    # form = CustomUserChangeForm
     model = Blogger
-    # list_display = ('__all__',)
-    # filter_horizontal = ('tiktok_link',)
 
 
 class MusicianAdmin(ModelAdmin):
-    # add_form = CustomUserCreationForm
-    # form = CustomUserChangeForm
     model = Musician
 
 

@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm, UserChangeForm
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from .models import CustomUser, Blogger
+from .models import CustomUser, Blogger, Musician
 
 
 class LoginForm(AuthenticationForm):
@@ -23,36 +23,13 @@ class LoginForm(AuthenticationForm):
         self.helper.add_input(submit)
 
 
-class CustomUserCreationForm(UserCreationForm):
+class BaseViewForm(UserChangeForm):
     class Meta:
         model = CustomUser
         fields = (
             'username',
             'first_name',
             'last_name',
-            # 'tiktok_link',
-        )
-
-
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = CustomUser
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            # 'tiktok_link',
-        )
-
-
-class CustomUserViewForm(UserChangeForm):
-    class Meta:
-        model = CustomUser
-        fields = (
-            'username',
-            'first_name',
-            'last_name',
-            # 'tiktok_link',
         )
         labels = {
             'username': 'Логин',
@@ -68,13 +45,40 @@ class CustomUserViewForm(UserChangeForm):
         self.fields.pop('password')
 
 
-# ------------------------------------
+class BloggerViewForm(UserChangeForm):
+    class Meta:
+        model = Blogger
+        fields = '__all__'
+        exclude = ['user', 'password']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.disabled = True
+        self.fields.pop('password')
+
+
+class MusicianViewForm(UserChangeForm):
+    class Meta:
+        model = Musician
+        fields = '__all__'
+        exclude = ['user']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.disabled = True
+        self.fields.pop('password')
+
+
 class BaseSignUpForm(UserCreationForm):
-    BASE_LABELS = (
-        'username',
-        'first_name',
-        'last_name',
-    )
+    class Meta:
+        model = CustomUser
+        fields = (
+            'username',
+            'first_name',
+            'last_name',
+        )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -102,10 +106,6 @@ class BloggerSignUpForm(BaseSignUpForm):
     tiktok_link = forms.URLField(label='Ссылка на tiktok', required=False)
     youtube_link = forms.URLField(label='Ссылка на youtube', required=False)
 
-    class Meta:
-        model = CustomUser
-        fields = BaseSignUpForm.BASE_LABELS
-
     field_order = ['first_name', 'last_name', 'subscriber_count', 'tiktok_link', 'youtube_link']
 
     @transaction.atomic
@@ -122,12 +122,10 @@ class BloggerSignUpForm(BaseSignUpForm):
 
 
 class MusicianSignUpForm(BaseSignUpForm):
-    class Meta:
-        model = CustomUser
-        fields = BaseSignUpForm.BASE_LABELS
-
-    def save(self, commit=True):
+    @transaction.atomic
+    def save(self):
         user = super().save(commit=False)
         user.is_musician = True
         user.save()
+        musician = Musician.objects.create(user=user)
         return user

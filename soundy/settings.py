@@ -133,5 +133,5 @@ STATICFILES_DIRS = [
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 APP_NAME = 'Soundi'
-LOGOUT_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = 'login'
 AUTH_USER_MODEL = 'account_service.CustomUser'

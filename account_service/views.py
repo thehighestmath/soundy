@@ -5,8 +5,8 @@ from django.views import View
 from django.views.generic import CreateView
 from django.views.generic import TemplateView
 
-from .forms import LoginForm, CustomUserViewForm, BloggerSignUpForm, MusicianSignUpForm
-from .models import CustomUser
+from .forms import LoginForm, BloggerSignUpForm, MusicianSignUpForm, BloggerViewForm, MusicianViewForm, BaseViewForm
+from .models import CustomUser, Blogger, Musician
 
 
 class CustomLoginView(LoginView):
@@ -17,13 +17,26 @@ class CustomLoginView(LoginView):
 
 class ProfileView(View):
     def get(self, request, **kwargs):
-        form = CustomUserViewForm(instance=request.user)
+        if request.user.is_blogger:
+            blogger = Blogger.objects.get(user_id=request.user.id)
+            base_form = BaseViewForm(instance=request.user)
+            advanced_form = BloggerViewForm(instance=blogger)
+
+        elif request.user.is_musician:
+            musician = Musician.objects.get(user_id=request.user.id)
+            base_form = BaseViewForm(instance=request.user)
+            advanced_form = MusicianViewForm(instance=musician)
+
+        else:
+            base_form = BaseViewForm(instance=request.user)
+            advanced_form = None
+
         return render(request, 'account_service/profile.html', {
-            'form': form
+            'base_form': base_form,
+            'advanced_form': advanced_form,
         })
 
 
-####
 class SignUpView(TemplateView):
     template_name = 'account_service/signup.html'
 
